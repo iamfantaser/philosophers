@@ -36,3 +36,33 @@ int	ft_atoi(const char *str)
 	}
 	return (res);
 }
+
+char	*ft_ltoa_base(unsigned long long num, int base)
+{
+	int					len;
+	unsigned long long	tmp;
+	char				*result;
+
+	len = 0;
+	tmp = num;
+	if (tmp == 0)
+		len++;
+	while (tmp)
+	{
+		tmp /= base;
+		len++;
+	}
+	result = malloc(sizeof(char) * len + 1);
+	result[len] = '\0';
+	while (len)
+	{
+		tmp = num % base;
+		if (tmp < 10)
+			result[len - 1] = tmp + '0';
+		else
+			result[len - 1] = tmp + '0' - 10;
+		num /= base;
+		len--;
+	}
+	return (result);
+}

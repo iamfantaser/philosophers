@@ -15,7 +15,6 @@ typedef enum e_state
 
 typedef struct s_philosopher
 {
-	char					current_fork;
 	short					hand[2];
 	int						id;
 	long long				circle;

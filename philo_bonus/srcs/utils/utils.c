@@ -1,53 +1,40 @@
 #include "../../includes/main.h"
 
-void	philo_death_procedure(int id)
+void	philo_print(t_philosopher *philo, char *str)
 {
-	int		i;
-	char	*time;
-
-	i = 0;
-	g_info.all_alive = 0;
-	sem_wait(g_info.write_sem);
-	time = ft_ltoa_base(ft_time() - g_info.t_start  / 1000, 10);
-	write(1, time, ft_strlen(time));
-	write(1, id, ft_strlen(id));
-	write(1, "died\n", 5);
-	sem_post(g_info.write_sem);
-	while (i < g_info.count - 1)
-	{
-		kill(g_info.phil[i].pid, SIGKILL);
-		g_info.phil[i++].state = DEAD;
-	}
-	g_info.ready = 0;
+	sem_wait(philo->write_sem);
+	printf("%lld %d %s", (ft_time() - philo->time_start) / 1000,
+		philo->id , str);
+	sem_post(philo->write_sem);
 }
 
-void	philo_print(char *str, char *id)
-{
-	char *time;
-
-	sem_wait(g_info.write_sem);
-	if (g_info.all_alive)
-	{
-		time = ft_ltoa_base(ft_time() - g_info.t_start  / 1000, 10);
-		write(1, time, ft_strlen(time));
-		write(1, id, ft_strlen(id));
-		write(1, str, ft_strlen(str));
-	}
-	sem_post(g_info.write_sem);
-}
-
-void	philo_terminate(void)
+void	philo_clear_sem_all(t_info *info)
 {
 	int i;
 
 	i = 0;
-	sem_close(g_info.write_sem);
-	while (i < g_info.count)
+	sem_close(info->write_sem);
+	sem_close(info->lifes);
+	sem_unlink("writer");
+	sem_unlink("lifes");
+	while (i < info->count)
 	{
-		sem_close(&g_info.sem[i]);
+		sem_close(info->sem[i]);
+		sem_unlink(info->forks_name[i++]);
+	}
+}
+
+void	philo_terminate(pid_t expetion_pid, t_info *info)
+{
+	int i;
+
+	i = 0;
+	while (i < info->count)
+	{
+		if (info->phil[i].pid != expetion_pid)
+			kill(info->phil[i].pid, SIGTERM);
 		i++;
 	}
-	free(g_info.phil);
 }
 
 int	philo_validation(int argc, char **argv)
@@ -77,7 +64,15 @@ int	philo_validation(int argc, char **argv)
 		return (1);
 }
 
-int	philo_do_action(t_philosopher *philo)
+int	philo_do_action(t_info *info, t_philosopher *philo)
 {
-	return (g_info.actions[philo->state](philo));
+	if (philo->state == HUNGRY)
+		return (philo_take_fork(info, philo));
+	else if (philo->state == EATING)
+		return (philo_eat(info, philo));
+	else if (philo->state == SLEEPING)
+		return (philo_sleep(philo));
+	else if (philo->state == THINKING)
+		return (philo_think(philo));
+	return (4);
 }
