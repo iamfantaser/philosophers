@@ -13,7 +13,7 @@ static void	philo_big_bro(void)
 		if ((g_info->phil[i].number_of_eat != 0 && (g_info->time_to_die
 					- ((ft_time() - g_info->phil[i].last_meal) / 1000)) <= 0))
 		{
-			philo_death_procedure(g_info->phil[i - 1].id);
+			philo_death_procedure(g_info->phil[i].id);
 			break ;
 		}
 		else
