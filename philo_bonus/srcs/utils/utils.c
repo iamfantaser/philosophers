@@ -4,35 +4,25 @@ void	philo_print(t_philosopher *philo, char *str)
 {
 	sem_wait(philo->write_sem);
 	printf("%lld %d %s", (ft_time() - philo->time_start) / 1000,
-		philo->id , str);
+		philo->id, str);
 	sem_post(philo->write_sem);
 }
 
 void	philo_clear_sem_all(t_info *info)
 {
-	int i;
-
-	i = 0;
 	sem_close(info->write_sem);
-	sem_close(info->lifes);
-	sem_unlink("writer");
-	sem_unlink("lifes");
-	while (i < info->count)
-	{
-		sem_close(info->sem[i]);
-		sem_unlink(info->forks_name[i++]);
-	}
+	sem_close(info->death);
+	sem_close(info->waiters);
 }
 
-void	philo_terminate(pid_t expetion_pid, t_info *info)
+void	philo_terminate(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->count)
 	{
-		if (info->phil[i].pid != expetion_pid)
-			kill(info->phil[i].pid, SIGTERM);
+		kill(info->phil[i].pid, SIGTERM);
 		i++;
 	}
 }
@@ -67,12 +57,10 @@ int	philo_validation(int argc, char **argv)
 int	philo_do_action(t_info *info, t_philosopher *philo)
 {
 	if (philo->state == HUNGRY)
-		return (philo_take_fork(info, philo));
-	else if (philo->state == EATING)
-		return (philo_eat(info, philo));
+		return (philo_action(info, philo));
 	else if (philo->state == SLEEPING)
 		return (philo_sleep(philo));
 	else if (philo->state == THINKING)
 		return (philo_think(philo));
-	return (4);
+	return (3);
 }

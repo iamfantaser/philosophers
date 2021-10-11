@@ -1,5 +1,5 @@
 #ifndef LIBS_H
-#define LIBS_H
+# define LIBS_H
 
 # include <pthread.h>
 # include <unistd.h>

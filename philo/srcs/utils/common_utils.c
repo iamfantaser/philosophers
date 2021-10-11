@@ -61,14 +61,13 @@ void	ft_usleep(long long stop_time)
 	struct timeval	step;
 	long long		dong;
 
-	while (1)
+	dong = 0;
+	while (dong < stop_time)
 	{
 		usleep(100);
 		gettimeofday(&step, NULL);
 		dong = (step.tv_sec) * 1000 * 1000
 			+ (step.tv_usec);
-		if (dong >= stop_time)
-			break ;
 	}
 }
 

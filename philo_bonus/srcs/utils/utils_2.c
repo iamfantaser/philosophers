@@ -2,7 +2,7 @@
 
 void	ft_error(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -13,60 +13,68 @@ void	ft_error(char *str)
 
 void	philo_free(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	free(info->sem);
 	free(info->phil);
-	while (i < info->count)
-		free(info->forks_name[i++]);
-	free(info->forks_name);
 }
 
-char *philo_fork_name(int n)
+void	philo_init_semaphores(t_info *info)
 {
-	char	*str;
-	char 	*result;
-	int		i;
-	int		j;
-	
-	i = 5;
-	j = 0;
-	result = malloc(sizeof(char) * 12);
-	str = ft_ltoa_base(n, 10);
-	result[0] = 'f';
-	result[1] = 'o';
-	result[2] = 'r';
-	result[3] = 'k';
-	result[4] = 's';
-	while (str[j])
-	{
-		result[i] = str[j];
-		i++;
-		j++;
-	}
-	result[i] = '\0';
-	free(str);
-	return (result);
+	int	i;
+
+	i = 0;
+	sem_unlink("str_wr");
+	info->write_sem = sem_open("str_wr", O_CREAT, 0777, 1);
+	sem_unlink("wai");
+	info->waiters = sem_open("wai", O_CREAT, 0777, info->count / 2);
+	sem_unlink("exi5t");
+	info->death = sem_open("exi5t", O_CREAT, 0777, 0);
 }
 
-void	philo_wait(t_info *info)
+void	*philo_wait(void *in)
 {
-	int 	status;
+	int		status;
 	pid_t	child;
+	t_info	*info;
 
+	info = (t_info *)in;
 	child = waitpid(0, &status, 0);
 	status = WEXITSTATUS(status);
-	if (status == 1)
+	if (status > 1 && info->eaters)
 	{
-		philo_terminate(child, info);
-		info->eaters = 0;
+		info->eaters -= 1;
 		philo_wait(info);
 	}
-	else if (status > 1 && info->eaters)
-	{
-		info->eaters -=1;
-		philo_wait(info);
-	}
+	else
+		sem_post(info->death);
+	return ((void *) 0);
 }
 
+int	ft_atoi(const char *str)
+{
+	char	neg;
+	int		i;
+	int		res;
+
+	i = 0;
+	neg = 1;
+	res = 0;
+	while (str[i] == ' ')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i++] == '-')
+			neg = -1;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		if (res < INT_MIN / 10)
+			return (0);
+		else if (res > INT_MAX / 10)
+			return (-1);
+		res = res * 10 + neg * (str[i++] - '0');
+	}
+	return (res);
+}

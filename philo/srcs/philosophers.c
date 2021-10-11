@@ -80,7 +80,6 @@ static int	philo_create_band(void)
 	g_info->w_mutex = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(g_info->w_mutex, NULL);
 	i = -1;
-	printf("count = %d\n", g_info->count);
 	while (++i < g_info->count)
 		philo_init(&g_info->phil[i], i);
 	g_info->phil[i] = g_info->phil[0];

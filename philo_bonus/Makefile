@@ -13,7 +13,7 @@ UNAME		:= $(shell uname)
 DEBUG		= -g
 INCLUDES	= -I./includes
 CFLAGS		= -Wall -Wextra -Werror -c $(DEBUG)
-LDFLAGS		= -pthread -fsanitize=address # -static-libasan
+LDFLAGS		= -pthread #-fsanitize=address # -static-libasan
 
 ifeq ($(SRCEXT), cpp)
 CC			= $(CXX)
