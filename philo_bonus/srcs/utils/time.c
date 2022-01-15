@@ -1,10 +1,11 @@
 #include "../../includes/main.h"
 
-void	ft_usleep(long long stop_time)
+void	ft_usleep(long long stop_time, long long time)
 {
 	struct timeval	step;
 	long long		dong;
 
+	usleep(time * 900);
 	dong = 0;
 	while (dong < stop_time)
 	{

@@ -8,7 +8,7 @@ char				*ft_itoa_base(unsigned int num, int base);
 char				*ft_ltoa_base(unsigned long long num, int base);
 int					ft_atoi(const char *str);
 long long			ft_time(void);
-void				ft_usleep(long long stop_time);
+void				ft_usleep(long long stop_time, long long time);
 void				philo_terminate(void);
 void				philo_print(char *str, int id);
 void				philo_death_procedure(int id);

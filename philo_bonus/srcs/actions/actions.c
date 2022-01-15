@@ -13,7 +13,7 @@ int	philo_action(t_info *info, t_philosopher *philo)
 		philo->number_of_eat = -1;
 	else
 		philo->number_of_eat--;
-	ft_usleep(ft_time() + info->time_to_eat * 1000);
+	ft_usleep(ft_time() + info->time_to_eat * 1000, philo->time_to_sleep);
 	sem_post(info->sem);
 	sem_post(info->sem);
 	sem_post(info->waiters);
@@ -26,7 +26,7 @@ int	philo_action(t_info *info, t_philosopher *philo)
 int	philo_sleep(t_philosopher *philo)
 {
 	philo_print(philo, "is sleeping\n");
-	ft_usleep(ft_time() + philo->time_to_sleep * 1000);
+	ft_usleep(ft_time() + philo->time_to_sleep * 1000, philo->time_to_sleep);
 	return (2);
 }
 

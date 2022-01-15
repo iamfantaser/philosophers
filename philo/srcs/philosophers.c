@@ -93,6 +93,8 @@ static int	philo_create_band(void)
 
 int	main(int argc, char **argv)
 {
+	int cse;
+
 	if (!philo_validation(argc, argv))
 		return (1);
 	g_info = (t_info *)malloc(sizeof(t_info));
@@ -106,7 +108,12 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	if (argc == 6)
-		g_info->number_of_eat = ft_atoi(argv[5]);
+	{
+		cse = ft_atoi(argv[5]);
+		if (cse == 0)
+			return (0);
+		g_info->number_of_eat = cse;
+	}
 	else
 		g_info->number_of_eat = -1;
 	philo_create_band();

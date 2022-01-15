@@ -89,6 +89,7 @@ static void	philo_create_band(t_info *info)
 
 int	main(int argc, char *argv[])
 {
+	int cse;
 	t_info	info;
 
 	if (!philo_validation(argc, argv))
@@ -98,7 +99,12 @@ int	main(int argc, char *argv[])
 	info.time_to_eat = ft_atoi(argv[3]);
 	info.time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		info.number_of_eat = ft_atoi(argv[5]);
+	{
+		cse = ft_atoi(argv[5]);
+		if (cse == 0)
+			return (0);
+		info.number_of_eat = cse;
+	}
 	else
 		info.number_of_eat = -1;
 	philo_create_band(&info);

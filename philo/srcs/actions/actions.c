@@ -32,7 +32,7 @@ int	philo_eat(int id)
 	else
 		g_info->phil[id - 1].number_of_eat--;
 	philo_print("is eating", id);
-	ft_usleep(g_info->phil[id - 1].circle + g_info->time_to_eat * 1000);
+	ft_usleep(g_info->phil[id - 1].circle + g_info->time_to_eat * 1000, g_info->time_to_eat);
 	philo_put_fork(id);
 	g_info->phil[id - 1].circle = ft_time();
 	if (g_info->phil[id - 1].number_of_eat == 0)
@@ -43,7 +43,7 @@ int	philo_eat(int id)
 int	philo_sleep(int id)
 {
 	philo_print("is sleeping", id);
-	ft_usleep(g_info->phil[id - 1].circle + g_info->time_to_sleep * 1000);
+	ft_usleep(g_info->phil[id - 1].circle + g_info->time_to_sleep * 1000, g_info->time_to_eat);
 	return (3);
 }
 

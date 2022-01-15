@@ -4,7 +4,7 @@
 # include "libs.h"
 # include "structures.h"
 
-void		ft_usleep(long long time);
+void		ft_usleep(long long stop, long long pause);
 int			ft_atoi(const char *str);
 void		ft_error(char *str);
 long long	ft_time(void);

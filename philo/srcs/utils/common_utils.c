@@ -56,18 +56,16 @@ char	*ft_ltoa_base(unsigned long long num, int base)
 	return (result);
 }
 
-void	ft_usleep(long long stop_time)
+void	ft_usleep(long long stop_time, long long time)
 {
-	struct timeval	step;
 	long long		dong;
 
-	dong = 0;
+	usleep(time * 900);
+	dong = ft_time();
 	while (dong < stop_time)
 	{
 		usleep(100);
-		gettimeofday(&step, NULL);
-		dong = (step.tv_sec) * 1000 * 1000
-			+ (step.tv_usec);
+		dong = ft_time();
 	}
 }
 
